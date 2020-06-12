@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    config:
+      discovery:
+        enabled: true # 通过服务发现的方式去找配置中心
+        service-id: luckyun-config # 配置中心的名字，直接配置名称可以在配置中心集群的时候实现负载均衡
+      name: common,zuul
+      profile: ${spring.profiles.active},luckyun # 对应配置中心文件的${profile}部分
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${eureka.host:127.0.0.1}:${eureka.port:20000}/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
